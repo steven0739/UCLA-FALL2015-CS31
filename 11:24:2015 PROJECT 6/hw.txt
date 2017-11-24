@@ -1,0 +1,232 @@
+1
+a
+int main()
+{
+    int arr[3] = { 5, 10, 15 };
+    int* ptr = arr;
+    
+    *ptr = 30;          // set arr[0] to 30
+    ptr[1] = 20;      // set arr[1] to 20
+    ptr += 2;
+    ptr[0] = 10;        // set arr[2] to 10
+    ptr -= 2;             //Set ptr back to the first position.
+    
+    while (ptr <= arr+2)
+    {
+        cout << *ptr << endl;   // print values
+        ptr++;
+    }
+}
+
+First it forgets to set ptr back to the first position, second it should use ptr[1] = 20.
+
+b
+void findMax(int arr[], int n, int* &pToMax)
+{
+    if (n <= 0)
+        return;      // no items, no maximum!
+    
+    pToMax = arr;
+    
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] > *pToMax)
+            pToMax = arr + i;
+    }
+}
+
+The pointer ptr is used without being initialized.
+Making pToMax call-by-reference so that pToMax actually refers to ptr and thus initializes ptr to arr.
+
+c
+int main()
+{
+    int* ptr;
+    int ncubed;
+    ptr = &ncubed;
+    computeCube(5, ptr);
+    cout << "Five cubed is " << *ptr << endl;
+}
+
+The ptr is being used without initialization.
+
+
+
+
+
+
+
+
+
+d
+bool strequal(const char str1[], const char str2[])
+{
+    bool check = false;
+    int k = 0;
+    
+    if(strlen(str1) == strlen(str2))
+        check=true;
+    
+    while (str1[k] != '\0'  &&  str2[k] != '\0')
+    {
+        if (str1[k] != str2[k])  // compare corresponding characters
+            return false;
+        // advance to the next character
+        k++;
+    }
+    
+    if(check)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int main()
+{
+    char a[15] = "Noor";
+    char b[15] = "Noah";
+    
+    if (strequal(a,b))
+        cout << "They're the same person!\n";
+}
+
+First, we need to compare the length of two strings, for even if the function returns true, the case can be wrong as well if one string is same as the other one when one runs out.
+Second, it needs to use str1[k] != '\0'  and increment k.
+
+e
+anArray is a local variable so the variable junk could potentially overwrite anArray because it will use the same memory address and thus it is undefined behavior.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2
+a. double* cat;
+b. double mouse[5];
+c. cat = &mouse[4];
+d. *cat = 42;
+e. *(mouse + 3) = 25;
+f.cat -= 3;
+g.cat[1] = 17;
+h.cat[0] = 54;	
+i. bool b = (*cat = = cat[1]);
+j. bool d = (cat = = mouse);
+
+
+
+
+
+
+3
+a
+double mean(const double* scores, int numScores)
+{
+    const double* ptr = scores;
+    double tot = 0;
+    int k = 0;
+    while ((scores + k) != (ptr + numScores))
+    {
+        tot += *(scores + k);
+        k++;
+    }
+    return tot / numScores;
+}
+
+b
+const char* findTheChar(const char* str, char chr)
+{
+    for (int k = 0; *(str + k) ! =  '\0';  k++)
+        if ( *(str + k) == chr)
+            return (str + k);
+    
+    return nullptr;
+}
+
+c
+const char* findTheChar(const char* str, char chr)
+{
+    while (*str != '\0')
+    {
+        if (*str == chr)
+        {
+            return str;
+        }
+        str ++;
+    }
+    return nullptr;
+}
+
+
+
+
+
+
+
+4
+will print 3
+and
+4
+79
+-1
+9
+22
+19
+
+int main()
+    {
+        int array[6] = { 5, 3, 4, 17, 22, 19 };  // initialize an array of int with size 6
+
+        int* ptr = maxwell(array, &array[2]); // The inputs are 5 and 4; Since 5 is greater than 4, the function would return the array
+        *ptr = -1;  // array[0] becomes -1 now. array[6] = { -1, 3, 4, 17, 22, 19 }
+        ptr += 2;   // ptr is now pointing to the third value in array (array[2])
+        ptr[1] = 9;  // it changes array[3] to 9. array[6] = { -1, 3, 4, 9, 22, 19 }
+        *(array+1) = 79;  // now it sets array[1] as 79. array[6] = { -1, 79, 4, 9, 22, 19 }
+
+        cout << &array[5] - ptr << endl;  // This is equivalent to (6-3) = 3, so will print 3, since &array[5] is on the 6th position and ptr is on the 3rd.
+
+        swap1(&array[0], &array[1]);  // Reverses the pointers that point to the first value and the second value of array.
+        swap2(array, &array[2]);  // Swaps the first value of array and the 3rd value of array. Array is now {4,79,-1,9,22,19}
+
+
+        for (int i = 0; i < 6; i++)
+    {
+            cout << array[i] << endl;  // print 4, 79, -1, 9, 22, 19, each in one line
+    } 
+
+
+
+5
+void removeS(char* s)
+{
+    while(*s != '\0')
+    {
+        if(*s == 's' || *s == 'S')
+        {
+            *s = '\b';
+        }
+        s++;
+    }
+}
+
+int main()
+{
+    char msg[50] = "She'll be a massless princess.";
+    removeS(msg);
+    cout << msg;  // prints   he'll be a male prince.
+}
